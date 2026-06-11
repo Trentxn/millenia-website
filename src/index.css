@@ -1,0 +1,132 @@
+/*
+  MILLENIA design tokens.
+
+  Type rationale:
+  - Big Shoulders: a condensed grotesk drawn for Chicago's civic identity. It has
+    speed in its letterforms and real presence at viewport scale, athletic without
+    borrowing a single sports cliche. Variable weight lets headlines hit 800 while
+    eyebrow rules stay lean.
+  - Schibsted Grotesk: a characterful Scandinavian grotesk for body copy. Warm
+    enough for voice, plain enough to stay out of the display face's way.
+  - Martian Mono: the scoreboard voice. Stats, wayfinding, the LED ticker. Its
+    width axis keeps long stat lines compact without squeezing tracking.
+
+  Color: warm near blacks layered for depth, bone for reading, gold scarce.
+  Gold is budgeted under 10% of any viewport including the Gold Line strokes.
+*/
+/* standard.css carries the full axis set (opsz for Big Shoulders, wdth for
+   Martian Mono) that display-tight and mono-label depend on */
+@import '@fontsource-variable/big-shoulders/standard.css';
+@import '@fontsource-variable/schibsted-grotesk';
+@import '@fontsource-variable/martian-mono/standard.css';
+@import 'tailwindcss';
+
+@theme {
+  --color-ink: oklch(14.5% 0.006 80);
+  --color-ink-2: oklch(17.5% 0.007 80);
+  --color-ink-3: oklch(21% 0.009 80);
+  --color-bone: oklch(92% 0.015 85);
+  --color-bone-dim: oklch(92% 0.015 85 / 62%);
+  --color-bone-ghost: oklch(92% 0.015 85 / 14%);
+  --color-gold: oklch(72% 0.13 92);
+  --color-gold-bright: oklch(82% 0.135 92);
+  --color-gold-deep: oklch(50% 0.1 90);
+
+  --font-display: 'Big Shoulders Variable', 'Arial Narrow', sans-serif;
+  --font-body: 'Schibsted Grotesk Variable', 'Segoe UI', sans-serif;
+  --font-mono: 'Martian Mono Variable', Consolas, monospace;
+
+  /* Display scale: tight steps, viewport coupled. The hero size is chosen so
+     the wordmark bleeds off the right edge on desktop, on purpose. */
+  --text-hero: clamp(4rem, 27vw, 30rem);
+  --text-hero--line-height: 0.82;
+  --text-slab: clamp(2.75rem, 7.5vw, 7.5rem);
+  --text-slab--line-height: 0.88;
+  /* capped by viewport height too: the manifesto must always fit inside its
+     pinned full height scene, eyebrow included, on short wide windows */
+  --text-manifesto: clamp(1.5rem, min(3.4vw, 5svh), 3.25rem);
+  --text-manifesto--line-height: 1.04;
+  --text-roster: clamp(1.5rem, 3.2vw, 3.25rem);
+  --text-roster--line-height: 0.95;
+  --text-eyebrow: clamp(0.625rem, 0.55rem + 0.3vw, 0.8125rem);
+  --text-eyebrow--line-height: 1.4;
+  --text-eyebrow--letter-spacing: 0.18em;
+
+  /* The Gold Line's home lane. */
+  --rail-x: 8vw;
+}
+
+@layer base {
+  html {
+    background-color: var(--color-ink);
+    color: var(--color-bone);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    scrollbar-color: var(--color-gold-deep) var(--color-ink);
+    /* the ident locks overflow; a stable gutter stops the buzzer frame from
+       shifting sideways when the scrollbar returns */
+    scrollbar-gutter: stable;
+  }
+
+  body {
+    overflow-x: clip;
+    line-height: 1.6;
+  }
+
+  ::selection {
+    background-color: var(--color-gold);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+  }
+}
+
+/* Display type with the condensed optical size locked in. */
+@utility display-tight {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  font-variation-settings: 'opsz' 72;
+}
+
+/* The scoreboard voice: one utility, used everywhere mono appears. */
+@utility mono-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-eyebrow);
+  line-height: var(--text-eyebrow--line-height);
+  letter-spacing: var(--text-eyebrow--letter-spacing);
+  text-transform: uppercase;
+  font-variation-settings: 'wdth' 87.5;
+}
+
+/* Link hover with intent: a gold underline that draws left to right. */
+@utility link-draw {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    height: 1px;
+    width: 100%;
+    background-color: var(--color-gold);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.35s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+
+  &:hover::after,
+  &:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &::after {
+      transition: none;
+    }
+  }
+}
