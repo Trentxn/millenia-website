@@ -33,7 +33,7 @@ export default function App() {
           <Movement />
           <div className="relative">
             {/* trunk run: the line's straight connector through the lower half */}
-            <RailRun className="top-0 left-(--rail-x) z-[5] h-full max-md:hidden" />
+            <RailRun className="top-0 left-(--rail-x) z-[5] h-full" />
             <Programs />
             <Facility />
             <Vision />

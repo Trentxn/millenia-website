@@ -36,7 +36,7 @@ export function CourtMinimap({ visible }: { visible: boolean }) {
     <div
       ref={ref}
       aria-hidden="true"
-      className={`pointer-events-none fixed bottom-5 left-(--rail-x) z-40 -translate-x-1/2 bg-ink p-1.5 transition-opacity duration-700 max-md:right-3 max-md:bottom-3 max-md:left-auto max-md:translate-x-0 ${
+      className={`pointer-events-none fixed bottom-5 left-(--rail-x) z-40 -translate-x-1/2 bg-ink p-1.5 transition-opacity duration-700 ${
         visible ? 'opacity-100' : 'opacity-0'
       }`}
     >

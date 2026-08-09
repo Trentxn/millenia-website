@@ -13,7 +13,7 @@ export function SectionMarker({
   return (
     <span
       aria-hidden="true"
-      className={`mono-label absolute left-(--rail-x) z-10 -translate-x-1/2 bg-ink py-3 text-bone-dim [writing-mode:vertical-rl] max-md:hidden ${className}`}
+      className={`mono-label absolute left-(--rail-x) z-10 -translate-x-1/2 bg-ink py-3 text-bone-dim [writing-mode:vertical-rl] ${className}`}
     >
       {label}
     </span>

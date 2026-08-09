@@ -169,7 +169,7 @@ export function Programs() {
           <div
             aria-hidden="true"
             data-axis="y"
-            className="js-key-edge absolute top-0 right-0 h-full w-0.5 origin-top bg-gold max-md:hidden"
+            className="js-key-edge absolute top-0 right-0 h-full w-0.5 origin-top bg-gold"
           />
           <div
             aria-hidden="true"
