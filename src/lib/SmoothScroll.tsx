@@ -1,8 +1,9 @@
 /*
   Lenis drives the page scroll; GSAP's ticker drives Lenis so ScrollTrigger
   and the smooth scroller share one clock (the official sync pattern).
-  syncTouch puts touch gestures through the same smoothing, so the scroll
-  choreography reads identically on phones and desktops.
+  Touch stays native (no syncTouch): hijacking touchmove blocks pinch zoom
+  and fights iOS momentum; the scroll choreography runs off native scroll
+  events just the same.
   Reduced motion gets native scrolling: no Lenis, no smoothing, no surprises.
 */
 import { useEffect, type ReactNode } from 'react'
@@ -35,7 +36,7 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
   return (
     <ReactLenis
       root
-      options={{ autoRaf: false, lerp: 0.095, anchors: true, syncTouch: true }}
+      options={{ autoRaf: false, lerp: 0.095, anchors: true }}
     >
       <RafDriver />
       {children}

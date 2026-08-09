@@ -7,7 +7,9 @@
   exception to the gold keyword law, spent at the emotional peak.
 
   One choreography at every width: phones pin and sweep the same arc as
-  desktops. Reduced motion: the finished page.
+  desktops. Viewports too short to hold the whole scene (landscape phones)
+  flow instead: lines ink as they enter, no pin. Reduced motion: the
+  finished page.
 */
 import { useRef } from 'react'
 import {
@@ -46,11 +48,12 @@ export function Movement() {
           overwrite: 'auto',
         })
 
-      /* The pin. Arc draw and line inking share one progress.
+      /* The pin, wherever the viewport is tall enough to hold the scene.
+         Arc draw and line inking share one progress.
          The arc's viewBox is stretched non uniformly and the stroke does not
          scale, so Chromium consumes dashes in screen pixels: the dash length
          is integrated in screen space and remeasured on refresh. */
-      mm.add(MOTION_OK, () => {
+      mm.add(`${MOTION_OK} and (min-height: 600px)`, () => {
         const svg = root.querySelector('.js-arc') as SVGSVGElement
         const path = root.querySelector('.js-arc-path') as SVGPathElement
         const lines = gsap.utils.toArray<HTMLElement>('.js-mline', root)
@@ -92,7 +95,9 @@ export function Movement() {
         const states = lines.map(() => false)
         const applyStates = (p: number) => {
           lines.forEach((el, i) => {
-            const on = p >= 0.1 + i * 0.145
+            /* the first line is inked from the jump: skip links and anchors
+               land at pin start, and an all-ghost screen reads as blank */
+            const on = i === 0 || p >= 0.1 + i * 0.145
             if (on !== states[i]) {
               states[i] = on
               inkLine(el, on)
@@ -131,6 +136,34 @@ export function Movement() {
           gsap.set(underline, { clearProps: 'transform' })
         }
       })
+
+      /* Short viewports: same ink language, triggered per line, no pin. The
+         pinned scene would hold lines below the fold for its whole run. */
+      mm.add(`${MOTION_OK} and (max-height: 599px)`, () => {
+        const lines = gsap.utils.toArray<HTMLElement>('.js-mline', root)
+        const underline = root.querySelector('.js-underline') as HTMLElement
+        gsap.set(lines, { color: 'var(--color-bone-ghost)' })
+        gsap.set(underline, { scaleX: 0, transformOrigin: 'left center' })
+
+        lines.forEach((el, i) => {
+          ScrollTrigger.create({
+            trigger: el,
+            start: 'top 72%',
+            once: true,
+            onEnter: () => {
+              inkLine(el, true)
+              if (i === lines.length - 1) {
+                gsap.to(underline, { scaleX: 1, duration: 0.5, ease: GLIDE, delay: 0.2 })
+              }
+            },
+          })
+        })
+
+        return () => {
+          gsap.set(lines, { clearProps: 'color' })
+          gsap.set(underline, { clearProps: 'transform' })
+        }
+      })
     },
     { scope },
   )
@@ -140,15 +173,16 @@ export function Movement() {
       ref={scope}
       id="movement"
       aria-labelledby="movement-heading"
-      className="relative flex h-svh min-h-[600px] items-center"
+      className="relative flex h-svh min-h-[600px] items-center short:h-auto short:min-h-0 short:py-28"
     >
       <SectionMarker label="THE ARC" className="top-[14%]" />
 
-      {/* the three point arc, bulging toward the words it reveals; capped so
-          the stroke never crosses the text column it exists to reveal */}
+      {/* the three point arc, bulging toward the words it reveals; the width
+          is capped per breakpoint so the stroke never crosses the text column
+          it exists to reveal (the bulge peaks at ~69% of this width) */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-0 left-(--rail-x) h-full w-[min(34vw,480px)]"
+        className="pointer-events-none absolute top-0 left-(--rail-x) h-full w-[min(34vw,480px)] max-lg:w-[24vw] max-md:w-5"
       >
         <svg
           className="js-arc h-full w-full"

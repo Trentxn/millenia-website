@@ -56,6 +56,11 @@
   --rail-x: 8vw;
 }
 
+/* Viewports too short to hold the pinned manifesto scene (landscape phones,
+   squat windows): the section flows instead of pinning. Movement.tsx gates
+   its ScrollTrigger contexts on the same 600px boundary. */
+@custom-variant short (@media (max-height: 599px));
+
 @layer base {
   html {
     background-color: var(--color-ink);
