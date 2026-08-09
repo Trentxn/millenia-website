@@ -27,15 +27,28 @@ export function Nav({ ready }: { ready: boolean }) {
   const [open, setOpen] = useState(false)
   const lenis = useLenis()
 
+  /* Hide on scroll down, return on scroll up, with hysteresis: the state
+     only flips after ~24px of travel in one direction. Lenis settles with a
+     long tail of sub-pixel deltas; a per-event threshold reads that tail as
+     direction changes and flutters the bar. */
   useEffect(() => {
     let lastY = window.scrollY
+    let acc = 0
     let raf = 0
     const onScroll = () => {
       cancelAnimationFrame(raf)
       raf = requestAnimationFrame(() => {
         const y = window.scrollY
-        setHidden(y > lastY + 2 && y > 140)
-        if (Math.abs(y - lastY) > 2) lastY = y
+        const delta = y - lastY
+        lastY = y
+        if (y <= 140) {
+          acc = 0
+          setHidden(false)
+          return
+        }
+        acc = Math.sign(delta) === Math.sign(acc) ? acc + delta : delta
+        if (acc > 24) setHidden(true)
+        else if (acc < -24) setHidden(false)
       })
     }
     window.addEventListener('scroll', onScroll, { passive: true })
