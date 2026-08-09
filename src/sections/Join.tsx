@@ -70,12 +70,12 @@ export function Join() {
       className="relative pt-[clamp(6rem,18vh,12rem)] pb-[clamp(5rem,14vh,9rem)]"
     >
       <SectionMarker label="THE RIM" className="top-[34%]" />
-      <RailRun className="top-0 left-(--rail-x) h-[clamp(4rem,12vh,8rem)] max-md:hidden" />
+      <RailRun className="top-0 left-(--rail-x) h-[clamp(4rem,12vh,8rem)]" />
 
       {/* the line becomes the rim */}
       <svg
         aria-hidden="true"
-        className="js-rim absolute top-[clamp(4rem,12vh,8rem)] left-(--rail-x) size-[clamp(56px,6vw,84px)] -translate-x-1/2 max-md:hidden"
+        className="js-rim absolute top-[clamp(4rem,12vh,8rem)] left-(--rail-x) size-[clamp(56px,6vw,84px)] -translate-x-1/2"
         viewBox="0 0 100 100"
         fill="none"
       >
@@ -90,7 +90,7 @@ export function Join() {
         />
       </svg>
 
-      <div className="pr-[clamp(1.25rem,6vw,6rem)] pl-[calc(var(--rail-x)+clamp(2.5rem,6vw,6rem))] max-md:pl-[calc(var(--rail-x)+1rem)]">
+      <div className="pr-[clamp(1.25rem,6vw,6rem)] pl-[calc(var(--rail-x)+clamp(2.5rem,6vw,6rem))]">
         <p className="mono-label mb-5 text-gold">JOIN THE MOVEMENT</p>
         <h2
           id="join-heading"

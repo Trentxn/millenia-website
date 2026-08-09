@@ -97,11 +97,11 @@ export function Ticker() {
         Basketball. Enrichment. Community. Discipline. Brotherhood. Sisterhood.
         Nassau.
       </p>
-      <BranchRule className="absolute top-0 left-(--rail-x) w-[calc(100vw-var(--rail-x))] max-md:left-0 max-md:w-full" />
+      <BranchRule className="absolute top-0 left-(--rail-x) w-[calc(100vw-var(--rail-x))]" />
       {/* the trunk passes straight through the board */}
       <div
         aria-hidden="true"
-        className="absolute inset-y-0 left-(--rail-x) w-0.5 bg-gold max-md:hidden"
+        className="absolute inset-y-0 left-(--rail-x) w-0.5 bg-gold"
       />
       <div aria-hidden="true" className="overflow-hidden py-4 md:py-5">
         <div className="js-track flex w-max">

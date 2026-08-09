@@ -15,6 +15,10 @@ import { useGSAP } from '@gsap/react'
 
 gsap.registerPlugin(ScrollTrigger, SplitText, CustomEase, useGSAP)
 
+/* Mobile browsers resize the viewport when the address bar hides; refreshing
+   every trigger mid-scroll makes pins jump. Dimensions settle on scroll end. */
+ScrollTrigger.config({ ignoreMobileResize: true })
+
 /* Fast attack, ~6% overshoot, controlled settle. Type and UI entrances. */
 export const SNAP = CustomEase.create('snap', '0.16, 1.06, 0.26, 1')
 

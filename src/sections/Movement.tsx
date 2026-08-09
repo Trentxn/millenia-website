@@ -6,7 +6,8 @@
   the line underlines the keyword instead of coloring it: the single
   exception to the gold keyword law, spent at the emotional peak.
 
-  Mobile: no pin; lines ink as they enter. Reduced motion: the finished page.
+  One choreography at every width: phones pin and sweep the same arc as
+  desktops. Reduced motion: the finished page.
 */
 import { useRef } from 'react'
 import {
@@ -45,11 +46,11 @@ export function Movement() {
           overwrite: 'auto',
         })
 
-      /* Desktop: the pin. Arc draw and line inking share one progress.
+      /* The pin. Arc draw and line inking share one progress.
          The arc's viewBox is stretched non uniformly and the stroke does not
          scale, so Chromium consumes dashes in screen pixels: the dash length
          is integrated in screen space and remeasured on refresh. */
-      mm.add(`${MOTION_OK} and (min-width: 768px)`, () => {
+      mm.add(MOTION_OK, () => {
         const svg = root.querySelector('.js-arc') as SVGSVGElement
         const path = root.querySelector('.js-arc-path') as SVGPathElement
         const lines = gsap.utils.toArray<HTMLElement>('.js-mline', root)
@@ -130,33 +131,6 @@ export function Movement() {
           gsap.set(underline, { clearProps: 'transform' })
         }
       })
-
-      /* Mobile: same ink language, triggered per line, no pin, no arc. */
-      mm.add(`${MOTION_OK} and (max-width: 767px)`, () => {
-        const lines = gsap.utils.toArray<HTMLElement>('.js-mline', root)
-        const underline = root.querySelector('.js-underline') as HTMLElement
-        gsap.set(lines, { color: 'var(--color-bone-ghost)' })
-        gsap.set(underline, { scaleX: 0, transformOrigin: 'left center' })
-
-        lines.forEach((el, i) => {
-          ScrollTrigger.create({
-            trigger: el,
-            start: 'top 72%',
-            once: true,
-            onEnter: () => {
-              inkLine(el, true)
-              if (i === lines.length - 1) {
-                gsap.to(underline, { scaleX: 1, duration: 0.5, ease: GLIDE, delay: 0.2 })
-              }
-            },
-          })
-        })
-
-        return () => {
-          gsap.set(lines, { clearProps: 'color' })
-          gsap.set(underline, { clearProps: 'transform' })
-        }
-      })
     },
     { scope },
   )
@@ -166,7 +140,7 @@ export function Movement() {
       ref={scope}
       id="movement"
       aria-labelledby="movement-heading"
-      className="relative flex h-svh min-h-[600px] items-center max-md:h-auto max-md:min-h-0 max-md:py-28"
+      className="relative flex h-svh min-h-[600px] items-center"
     >
       <SectionMarker label="THE ARC" className="top-[14%]" />
 
@@ -174,7 +148,7 @@ export function Movement() {
           the stroke never crosses the text column it exists to reveal */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-0 left-(--rail-x) hidden h-full w-[min(34vw,480px)] lg:block"
+        className="pointer-events-none absolute top-0 left-(--rail-x) h-full w-[min(34vw,480px)]"
       >
         <svg
           className="js-arc h-full w-full"

@@ -181,7 +181,8 @@ export function Hero({ onReady }: { onReady: () => void }) {
           if (tl.progress() < 1) tl.progress(1)
         }
         window.addEventListener('wheel', skip, { passive: true, once: true })
-        window.addEventListener('touchstart', skip, { passive: true, once: true })
+        /* touchmove, not touchstart: a tap is not a scroll attempt */
+        window.addEventListener('touchmove', skip, { passive: true, once: true })
         window.addEventListener('keydown', skip, { once: true })
 
         /* Hold the opening frame until the display face is ready so the slam
@@ -197,7 +198,7 @@ export function Hero({ onReady }: { onReady: () => void }) {
         return () => {
           cancelled = true
           window.removeEventListener('wheel', skip)
-          window.removeEventListener('touchstart', skip)
+          window.removeEventListener('touchmove', skip)
           window.removeEventListener('keydown', skip)
           identLockRef.current = false
           lenisRef.current?.start()
@@ -261,7 +262,7 @@ export function Hero({ onReady }: { onReady: () => void }) {
         </p>
         <h1
           aria-label="MILLENIA"
-          className="display-tight text-hero font-extrabold whitespace-nowrap text-bone max-md:text-[23vw]"
+          className="display-tight text-hero font-extrabold whitespace-nowrap text-bone"
         >
           {LETTERS.map((c, i) => (
             <span
@@ -283,9 +284,9 @@ export function Hero({ onReady }: { onReady: () => void }) {
       {/* the line tips off: drops from the hero toward the run of play */}
       <div
         aria-hidden="true"
-        className="js-dropline absolute bottom-0 left-(--rail-x) h-[14vh] w-0.5 origin-top bg-gold max-md:hidden"
+        className="js-dropline absolute bottom-0 left-(--rail-x) h-[14vh] w-0.5 origin-top bg-gold"
       />
-      <p className="js-cue mono-label absolute right-[clamp(1rem,4vw,4rem)] bottom-6 text-bone-dim max-md:right-auto max-md:left-[calc(var(--rail-x)+1rem)]">
+      <p className="js-cue mono-label absolute right-[clamp(1rem,4vw,4rem)] bottom-6 text-bone-dim">
         SCROLL FOR THE FULL COURT
       </p>
     </section>
